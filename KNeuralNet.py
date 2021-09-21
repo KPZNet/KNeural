@@ -42,6 +42,7 @@ outputs = np.array([[0], [0], [0], [1], [1], [1]])
 class NeuralNetwork:
 
     def __init__(self, inputs, outputs):
+        np.random.seed(123)
         self.inputs  = inputs
         self.outputs = outputs
         # initialize weights as normal random vars
