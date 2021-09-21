@@ -56,10 +56,9 @@ def sigmoidA_derivative(x):
 
 class NeuralNetwork:
 
-    def __init__(self, inputs, outputs):
-        np.random.seed(99)
-        self.inputs = inputs
-        self.outputs = outputs
+    def __init__(self, seed):
+        np.random.seed(seed)
+
         # initialize weights as normal random vars
         self.weights = np.array([[np.random.normal()],
                                  [np.random.normal()],
@@ -76,25 +75,25 @@ class NeuralNetwork:
     def sigmoid_derivative(self, x):
         return x * (1 - x)
 
-    def feed_forward(self, sigmoid_fn):
-        self.hidden = sigmoid_fn(np.dot(self.inputs, self.weights))
+    def feed_forward(self, training_input, sigmoid_fn):
+        self.hidden = sigmoid_fn(np.dot(training_input, self.weights))
 
-    def backpropagation(self, sigmoid_fn_derivative):
-        self.error = self.outputs - self.hidden
+    def backpropagation(self, training_input, training_output, sigmoid_fn_derivative):
+        self.error = training_output - self.hidden
         delta = self.error * sigmoid_fn_derivative(self.hidden)
-        self.weights += np.dot(self.inputs.T, delta)
+        self.weights += np.dot(training_input.T, delta)
         self.weight_history.append(copy.deepcopy(self.weights))
 
-    def train(self, epochs=250):
+    def train(self, training_input, training_output, epochs=250):
         for epoch in range(epochs):
-            stop = self.run_epoch(epoch)
+            stop = self.run_epoch(training_input, training_output, epoch)
             if stop:
                 break
 
-    def run_epoch(self, epoch):
+    def run_epoch(self, training_input, training_output, epoch):
         stop = False
-        self.feed_forward(sigmoid_fn=sigmoidA)
-        self.backpropagation(sigmoid_fn_derivative=sigmoidA_derivative)
+        self.feed_forward(training_input, sigmoid_fn=sigmoidA)
+        self.backpropagation(training_input, training_output, sigmoid_fn_derivative=sigmoidA_derivative)
 
         err = np.average(np.abs(self.error))
         if err < self.stop_delta:
@@ -108,8 +107,8 @@ class NeuralNetwork:
         return prediction
 
 
-NN = NeuralNetwork(inputs, outputs)
-NN.train()
+NN = NeuralNetwork(99)
+NN.train(inputs, outputs)
 
 run_test_1 = np.array([[1, 1, 0, 1]])
 run_test_2 = np.array([[0, 1, 1, 1]])
