@@ -31,7 +31,7 @@ def plot_weights(epocs, weight_history):
     plt.show()
 
 
-inputs = np.array([[0, 1, 1, 1],
+inputsA = np.array([[0, 1, 1, 1],
                    [1, 1, 1, 0],
                    [0, 0, 1, 1],
                    [1, 0, 1, 1],
@@ -44,7 +44,16 @@ inputs = np.array([[0, 1, 1, 1],
                    [1, 0, 0, 1],
                    [1, 0, 0, 1]])
 
-outputs = np.array([inputs[:, 2]]).T
+inputsB = np.array([[0, 1, 1, 1],
+                   [1, 1, 1, 0],
+                   [0, 0, 1, 1],
+                   [1, 0, 1, 1],
+                   [1, 1, 1, 0],
+                   [1, 0, 1, 1],
+                   [1, 0, 0, 0]])
+
+outputsA = np.array([inputsA[:, 2]]).T
+outputsB = np.array([inputsB[:, 2]]).T
 
 
 def sigmoidA(x):
@@ -108,7 +117,7 @@ class NeuralNetwork:
 
 
 NN = NeuralNetwork(99)
-NN.train(inputs, outputs)
+NN.train(inputsA, outputsA)
 
 run_test_1 = np.array([[1, 1, 0, 1]])
 run_test_2 = np.array([[0, 1, 1, 1]])
