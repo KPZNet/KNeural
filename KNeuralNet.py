@@ -18,9 +18,11 @@ def plot_weights(epocs, weight_history) :
     w_0 = wh[:, 0]
     w_1 = wh[:, 1]
     w_2 = wh[:, 2]
+    w_3 = wh[:, 3]
     plt.plot ( epocs, w_0, label="weight 0" )
     plt.plot ( epocs, w_1, label="weight 1" )
     plt.plot ( epocs, w_2, label="weight 2" )
+    plt.plot ( epocs, w_3, label="weight 3" )
 
     plt.title ( "Weights" )
     plt.xlabel ( "EPOCs" )
@@ -29,14 +31,20 @@ def plot_weights(epocs, weight_history) :
     plt.show ()
 
 
-inputs = np.array([[0, 1, 0],
-                   [0, 1, 1],
-                   [0, 0, 0],
-                   [1, 0, 0],
-                   [1, 1, 1],
-                   [1, 0, 1]])
+inputs = np.array([[0, 1, 1, 1],
+                   [1, 1, 1, 0],
+                   [0, 0, 1, 1],
+                   [1, 0, 1, 1],
+                   [1, 1, 1, 0],
+                   [1, 0, 1, 1],
+                   [1, 0, 0, 0],
+                   [0, 0, 0, 1],
+                   [1, 0, 0, 1],
+                   [0, 0, 0, 0],
+                   [1, 0, 0, 1],
+                   [1, 0, 0, 1]])
 
-outputs = np.array([[0], [0], [0], [1], [1], [1]])
+outputs = np.array( [inputs[:, 2]] ).T
 
 class NeuralNetwork:
 
@@ -45,11 +53,14 @@ class NeuralNetwork:
         self.inputs  = inputs
         self.outputs = outputs
         # initialize weights as normal random vars
-        self.weights = np.array([[np.random.normal()], [np.random.normal()], [np.random.normal()]])
+        self.weights = np.array([[np.random.normal()],
+                                 [np.random.normal()],
+                                 [np.random.normal()],
+                                 [np.random.normal()]])
         self.error_history = []
         self.epoch_list = []
         self.weight_history = []
-        self.stop_delta = 0.095
+        self.stop_delta = 0.01
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -95,13 +106,12 @@ NN = NeuralNetwork(inputs, outputs)
 NN.train()
 
 # create two new examples to predict                                   
-example = np.array([[1, 1, 0]])
-example_2 = np.array([[0, 1, 1]])
+example = np.array([[1, 1, 0, 1]])
+example_2 = np.array([[0, 1, 1, 1]])
 
 # print the predictions for both examples                                   
-print(NN.predict(example), ' - Correct: ', example[0][0])
-print(NN.predict(example_2), ' - Correct: ', example_2[0][0])
-
+print(NN.predict(example), ' - Correct: ', 0)
+print(NN.predict(example_2), ' - Correct: ', 1)
 
 plot_error(NN.epoch_list, NN.error_history)
 plot_weights(NN.epoch_list, NN.weight_history)
