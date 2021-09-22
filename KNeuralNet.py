@@ -75,8 +75,7 @@ class NeuralNetwork:
 
     def train(self, training_input, training_output, epochs=250):
         for epoch in range(epochs):
-            stop = self.run_epoch(training_input, training_output, self.epoch_num)
-            self.epoch_num += 1
+            stop = self.run_epoch(training_input, training_output, epoch)
             if stop:
                 break
 
