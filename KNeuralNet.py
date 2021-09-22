@@ -22,24 +22,6 @@ def plot_weights(epocs, weight_history):
     plt.legend()
     plt.show()
 
-inputsA = np.array([[0, 1, 1, 1, 0, 1],
-                    [1, 1, 0, 0, 1, 0],
-                    [0, 0, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 0, 1],
-                    [0, 0, 0, 1, 0, 0],
-                    [0, 0, 0, 0, 0, 1],
-                    [1, 1, 0, 0, 0, 0],
-                    [0, 1, 1, 1, 0, 1],
-                    [1, 1, 1, 1, 0, 1],
-                    [0, 0, 1, 1, 0, 1],
-                    [1, 1, 0, 0, 1, 0],
-                    [0, 1, 0, 1, 1, 0],
-                    [1, 1, 1, 0, 1, 0],
-                    [0, 1, 0, 0, 0, 0],
-                    [0, 1, 1, 1, 1, 1]])
-
-outputsA = np.array([inputsA[:, 2]]).T
-
 def sigmoidA(x):
     return 1 / (1 + np.exp(-x))
 
@@ -47,17 +29,8 @@ def sigmoidA_derivative(x):
     return x * (1 - x)
 
 class NeuralNetwork:
-    def __init__(self, seed):
-        np.random.seed(seed)
+    def __init__(self):
 
-        self.weights = np.array([
-                                 [np.random.normal()],
-                                 [np.random.normal()],
-                                 [np.random.normal()],
-                                 [np.random.normal()],
-                                 [np.random.normal()],
-                                 [np.random.normal()],
-                                 ])
         self.error_history = []
         self.epoch_list = []
         self.weight_history = []
@@ -79,6 +52,7 @@ class NeuralNetwork:
         self.weight_history.append(copy.deepcopy(self.weights))
 
     def train(self, training_input, training_output, epochs=250):
+        self.weights = np.array( np.random.normal(size=(col, 1)) )
         for epoch in range(epochs):
             stop = self.run_epoch(training_input, training_output, epoch)
             if stop:
@@ -106,7 +80,12 @@ def test_net(nnet):
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
 
-NNN = NeuralNetwork(99)
+np.random.seed(99)
+row, col = 50, 6
+inputsA = np.random.randint(2, size=(row,col))
+
+outputsA = np.array([inputsA[:, 2]]).T
+NNN = NeuralNetwork()
 NNN.train(inputsA, outputsA)
 
 plot_error(NNN.epoch_list, NNN.error_history)
