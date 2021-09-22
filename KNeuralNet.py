@@ -117,7 +117,7 @@ class NeuralNetwork:
 
 
 NN = NeuralNetwork(99)
-NN.train(inputsA, outputsA)
+NN.train(inputsA, outputsA, 500)
 
 run_test_1 = np.array([[1, 1, 0, 1]])
 run_test_2 = np.array([[0, 1, 1, 1]])
