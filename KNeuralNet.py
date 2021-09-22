@@ -1,5 +1,5 @@
-import numpy as np  # helps with the math
-import matplotlib.pyplot as plt  # to plot error during training
+import numpy as np
+import matplotlib.pyplot as plt
 import copy
 
 def plot_error(epocs, error_history):
