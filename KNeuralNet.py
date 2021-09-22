@@ -80,11 +80,12 @@ def test_net(nnet):
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
 
-np.random.seed(99)
+np.random.seed(6)
 row, col = 50, 6
-inputsA = np.random.randint(2, size=(row,col))
 
+inputsA = np.random.randint(2, size=(row,col))
 outputsA = np.array([inputsA[:, 2]]).T
+
 NNN = NeuralNetwork()
 NNN.train(inputsA, outputsA)
 
