@@ -85,7 +85,7 @@ row, col = 50, 6
 
 inputsA = np.random.randint(2, size=(row,col))
 for n in inputsA:
-    n[col-1] = n[1]
+    n[0] = n[col-1] = n[1]
 outputsA = np.array([ inputsA[:, 1] ]).T
 
 NNN = NeuralNetwork()
