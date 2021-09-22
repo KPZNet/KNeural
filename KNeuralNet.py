@@ -2,7 +2,6 @@ import numpy as np  # helps with the math
 import matplotlib.pyplot as plt  # to plot error during training
 import copy
 
-
 def plot_error(epocs, error_history):
     plt.plot(epocs, error_history, label="errors")
     plt.title("Error Rates")
@@ -23,18 +22,21 @@ def plot_weights(epocs, weight_history):
     plt.legend()
     plt.show()
 
-inputsA = np.array([[0, 1, 1, 1],
-                   [1, 1, 0, 0],
-                   [1, 0, 0, 1],
-                   [0, 0, 1, 1],
-                   [0, 1, 1, 0],
-                   [1, 0, 0, 1],
-                   [0, 0, 1, 0],
-                   [1, 1, 0, 0],
-                   [1, 0, 0, 1],
-                   [0, 0, 1, 1],
-                   [1, 1, 0, 0],
-                   [0, 0, 1, 0]])
+inputsA = np.array([[0, 1, 1, 1, 0, 1],
+                    [1, 1, 0, 0, 1, 0],
+                    [0, 0, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 0, 1],
+                    [0, 0, 0, 1, 0, 0],
+                    [0, 0, 0, 0, 0, 1],
+                    [1, 1, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 0, 1],
+                    [1, 1, 1, 1, 0, 1],
+                    [0, 0, 1, 1, 0, 1],
+                    [1, 1, 0, 0, 1, 0],
+                    [0, 1, 0, 1, 1, 0],
+                    [1, 1, 1, 0, 1, 0],
+                    [0, 1, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 1, 1]])
 
 outputsA = np.array([inputsA[:, 2]]).T
 
@@ -48,15 +50,18 @@ class NeuralNetwork:
     def __init__(self, seed):
         np.random.seed(seed)
 
-        self.weights = np.array([[np.random.normal()],
+        self.weights = np.array([
                                  [np.random.normal()],
                                  [np.random.normal()],
-                                 [np.random.normal()]])
+                                 [np.random.normal()],
+                                 [np.random.normal()],
+                                 [np.random.normal()],
+                                 [np.random.normal()],
+                                 ])
         self.error_history = []
         self.epoch_list = []
         self.weight_history = []
         self.stop_delta = 0.001
-        self.epoch_num = 0
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -96,17 +101,10 @@ class NeuralNetwork:
         return prediction
 
 def test_net(nnet):
-    run_test_1 = np.array([[0, 1, 1, 0]])
-    run_test_2 = np.array([[1, 1, 0, 1]])
-    # print the predictions for both examples
+    run_test_1 = np.array([[1, 0, 1, 0, 0, 0]])
+    run_test_2 = np.array([[1, 1, 0, 1, 1, 0]])
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
-
-def flip():
-    indices_one = outputsA == 1
-    indices_zero = outputsA == 0
-    outputsA[indices_one] = 0  # replacing 1s with 0s
-    outputsA[indices_zero] = 1  # replacing 0s with 1s
 
 NNN = NeuralNetwork(99)
 NNN.train(inputsA, outputsA)
