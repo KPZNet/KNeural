@@ -5,24 +5,17 @@ import copy
 
 def plot_error(epocs, error_history):
     plt.plot(epocs, error_history, label="errors")
-
     plt.title("Error Rates")
     plt.xlabel("EPOCs")
     plt.ylabel("error")
     plt.legend()
     plt.show()
 
-
 def plot_weights(epocs, weight_history):
     wh = np.array(weight_history)
-    w_0 = wh[:, 0]
-    w_1 = wh[:, 1]
-    w_2 = wh[:, 2]
-    w_3 = wh[:, 3]
-    plt.plot(epocs, w_0, label="weight 0")
-    plt.plot(epocs, w_1, label="weight 1")
-    plt.plot(epocs, w_2, label="weight 2")
-    plt.plot(epocs, w_3, label="weight 3")
+    s = wh.shape[1]
+    for i in range(s):
+        plt.plot(epocs, wh[:, i], label="weight {0}".format(i))
 
     plt.title("Weights")
     plt.xlabel("EPOCs")
@@ -30,31 +23,20 @@ def plot_weights(epocs, weight_history):
     plt.legend()
     plt.show()
 
-
 inputsA = np.array([[0, 1, 1, 1],
-                   [1, 1, 1, 0],
-                   [0, 0, 1, 1],
-                   [1, 0, 1, 1],
-                   [1, 1, 1, 0],
-                   [1, 0, 1, 1],
-                   [1, 0, 0, 0],
-                   [0, 0, 0, 1],
+                   [1, 1, 0, 0],
                    [1, 0, 0, 1],
-                   [0, 0, 0, 0],
-                   [1, 0, 0, 1],
-                   [1, 0, 0, 1]])
-
-inputsB = np.array([[0, 1, 1, 1],
-                   [1, 1, 1, 0],
                    [0, 0, 1, 1],
-                   [1, 0, 1, 1],
-                   [1, 1, 1, 0],
-                   [1, 0, 1, 1],
-                   [1, 0, 0, 0]])
+                   [0, 1, 1, 0],
+                   [1, 0, 0, 1],
+                   [0, 0, 1, 0],
+                   [1, 1, 0, 0],
+                   [1, 0, 0, 1],
+                   [0, 0, 1, 1],
+                   [1, 1, 0, 0],
+                   [0, 0, 1, 0]])
 
 outputsA = np.array([inputsA[:, 2]]).T
-outputsB = np.array([inputsB[:, 2]]).T
-
 
 def sigmoidA(x):
     return 1 / (1 + np.exp(-x))
@@ -62,13 +44,10 @@ def sigmoidA(x):
 def sigmoidA_derivative(x):
     return x * (1 - x)
 
-
 class NeuralNetwork:
-
     def __init__(self, seed):
         np.random.seed(seed)
 
-        # initialize weights as normal random vars
         self.weights = np.array([[np.random.normal()],
                                  [np.random.normal()],
                                  [np.random.normal()],
@@ -76,7 +55,8 @@ class NeuralNetwork:
         self.error_history = []
         self.epoch_list = []
         self.weight_history = []
-        self.stop_delta = 0.01
+        self.stop_delta = 0.001
+        self.epoch_num = 0
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -95,7 +75,8 @@ class NeuralNetwork:
 
     def train(self, training_input, training_output, epochs=250):
         for epoch in range(epochs):
-            stop = self.run_epoch(training_input, training_output, epoch)
+            stop = self.run_epoch(training_input, training_output, self.epoch_num)
+            self.epoch_num += 1
             if stop:
                 break
 
@@ -115,16 +96,23 @@ class NeuralNetwork:
         prediction = sigmoid_fn(np.dot(new_input, self.weights))
         return prediction
 
+def test_net(nnet):
+    run_test_1 = np.array([[0, 1, 1, 0]])
+    run_test_2 = np.array([[1, 1, 0, 1]])
+    # print the predictions for both examples
+    print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
+    print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
 
-NN = NeuralNetwork(99)
-NN.train(inputsA, outputsA)
+def flip():
+    indices_one = outputsA == 1
+    indices_zero = outputsA == 0
+    outputsA[indices_one] = 0  # replacing 1s with 0s
+    outputsA[indices_zero] = 1  # replacing 0s with 1s
 
-run_test_1 = np.array([[1, 1, 0, 1]])
-run_test_2 = np.array([[0, 1, 1, 1]])
+NNN = NeuralNetwork(99)
+NNN.train(inputsA, outputsA)
 
-# print the predictions for both examples                                   
-print(NN.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 0)
-print(NN.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 1)
+plot_error(NNN.epoch_list, NNN.error_history)
+plot_weights(NNN.epoch_list, NNN.weight_history)
 
-plot_error(NN.epoch_list, NN.error_history)
-plot_weights(NN.epoch_list, NN.weight_history)
+test_net(NNN)
