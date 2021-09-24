@@ -75,7 +75,7 @@ class NeuralNetwork:
         return prediction
 
 def test_net(nnet):
-    run_test_1 = np.array([[1, 1, 1, 0, 0,0, 0,0]])
+    run_test_1 = np.array([[1, 1, 1, 0, 0,0, 0,1]])
     run_test_2 = np.array([[0, 0, 0, 1, 0,1, 1,0]])
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
     print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
@@ -85,7 +85,7 @@ row, col = 60, 8
 
 inputsA = np.random.randint(2, size=(row,col))
 for n in inputsA:
-    n[0] = n[1] = n[2]
+    n[0] = n[1] = n[col-1]
 outputsA = np.array([ inputsA[:, 0] ]).T
 
 NNN = NeuralNetwork()
