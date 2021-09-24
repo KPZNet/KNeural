@@ -77,10 +77,10 @@ class NeuralNetwork:
 def test_net(nnet):
     run_test_1 = np.array([[1, 1, 1, 0, 0,0, 0,1]])
     run_test_2 = np.array([[0, 0, 0, 1, 0,1, 1,0]])
-    print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' - Answer: ', 1)
-    print(nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' - Answer: ', 0)
+    print('Got: ', nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' Expect: ', run_test_1[0][1])
+    print('Got: ', nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' Expect: ', run_test_2[0][1])
 
-np.random.seed(6)
+#np.random.seed(6)
 row, col = 60, 8
 
 inputsA = np.random.randint(2, size=(row,col))
