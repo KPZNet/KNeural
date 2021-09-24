@@ -13,8 +13,8 @@ def plot_error(epocs, error_history):
 def plot_weights(epocs, weight_history):
     wh = np.array(weight_history)
     s = wh.shape[1]
-    for i in range(s):
-        plt.plot(epocs, wh[:, i], label="weight {0}".format(i))
+
+    [plt.plot(epocs, wh[:, i], label="weight {0}".format(i) ) for i in range(s)]
 
     plt.title("Weights")
     plt.xlabel("EPOCs")
