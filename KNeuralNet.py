@@ -44,15 +44,6 @@ class NeuralNetwork:
     def sigmoid_derivative(self, x):
         return x * (1 - x)
 
-    def feed_forward(self, training_input, sigmoid_fn):
-        self.hidden = sigmoid_fn(np.dot(training_input, self.weights))
-
-    def backpropagation(self, training_input, training_output, sigmoid_fn_derivative):
-        self.error = training_output - self.hidden
-        delta = self.error * sigmoid_fn_derivative(self.hidden)
-        self.weights += np.dot(training_input.T, delta)
-        self.weight_history.append(copy.deepcopy(self.weights))
-
     def train(self, training_input, training_output, epochs=250):
         self.weights = np.array( np.random.normal(size=(col, 1)) )
         for epoch in range(epochs):
@@ -71,6 +62,16 @@ class NeuralNetwork:
         self.error_history.append(err)
         self.epoch_list.append(epoch)
         return stop
+
+    def feed_forward(self, training_input, sigmoid_fn):
+        self.hidden = sigmoid_fn(np.dot(training_input, self.weights))
+
+    def backpropagation(self, training_input, training_output, sigmoid_fn_derivative):
+        self.error = training_output - self.hidden
+        delta = self.error * sigmoid_fn_derivative(self.hidden)
+        self.weights += np.dot(training_input.T, delta)
+        self.weight_history.append(copy.deepcopy(self.weights))
+
 
     def predict(self, sigmoid_fn, new_input):
         prediction = sigmoid_fn(np.dot(new_input, self.weights))
