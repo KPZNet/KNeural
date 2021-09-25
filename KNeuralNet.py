@@ -85,7 +85,7 @@ row, col = 60, 8
 
 inputsA = np.random.randint(2, size=(row,col))
 for n in inputsA:
-    n[0] = n[1] = n[col-1]
+    n[0] = n[col-1]
 outputsA = np.array([ inputsA[:, 0] ]).T
 
 NNN = NeuralNetwork()
@@ -94,4 +94,4 @@ NNN.train(inputsA, outputsA)
 plot_error(NNN.epoch_list, NNN.error_history)
 plot_weights(NNN.epoch_list, NNN.weight_history)
 
-test_net(NNN)
+#test_net(NNN)
