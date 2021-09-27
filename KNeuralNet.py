@@ -36,7 +36,7 @@ class NeuralNetwork:
         self.error_history = []
         self.epoch_list = []
         self.weight_history = []
-        self.stop_delta = 0.001
+        self.stop_delta = 0.000
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -92,7 +92,7 @@ for n in inputsA:
 outputsA = np.array([ inputsA[:, 0] ]).T
 
 NNN = NeuralNetwork()
-NNN.train(inputsA, outputsA)
+NNN.train(inputsA, outputsA, epochs=1000)
 
 plot_error(NNN.epoch_list, NNN.error_history)
 plot_weights(NNN.epoch_list, NNN.weight_history)
