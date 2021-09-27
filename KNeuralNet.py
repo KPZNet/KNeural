@@ -80,22 +80,24 @@ class NeuralNetwork:
 def test_net(nnet):
     run_test_1 = np.array([[1, 1, 1, 0, 0, 1, 0,1]])
     run_test_2 = np.array([[0, 0, 0, 1, 0, 1, 1,0]])
-    print('Got: ', nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1), ' Expect: ', run_test_1[0][1])
-    print('Got: ', nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2), ' Expect: ', run_test_2[0][1])
+    print('Test for:', run_test_1[0][0], "model =", nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_1))
+    print('Test for:', run_test_2[0][0], "model =", nnet.predict(sigmoid_fn=sigmoidA, new_input=run_test_2))
 
 #np.random.seed(datetime.now().microsecond)
 np.random.seed(63)
 row, col = 60, 8
+epochs = 1000
 
 inputsA = np.random.randint(2, size=(row,col))
-for n in inputsA:
-    n[0] = n[col-1]
 outputsA = np.array([ inputsA[:, 0] ]).T
+for n in inputsA:
+    n[col-1] = n[0]
 
 NNN = NeuralNetwork()
-NNN.train(inputsA, outputsA, epochs=1000)
+NNN.train(inputsA, outputsA, epochs=epochs)
 
 plot_error(NNN.epoch_list, NNN.error_history)
 plot_weights(NNN.epoch_list, NNN.weight_history)
 
+print("Epochs: ", epochs)
 test_net(NNN)
