@@ -1,6 +1,9 @@
 import tensorflow as tf
 mnist = tf.keras.datasets.mnist
 
+#jlkajsdflkadsfjasdfk
+#kadjf;akldsjfasdf
+
 
 #ja;ldkfja;ldkfjasdf
 
