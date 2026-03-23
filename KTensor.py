@@ -5,7 +5,12 @@ mnist = tf.keras.datasets.mnist
 #kadjf;akldsjfasdf
 
 #3333333333333333333333
+ 
+#locall jlkajsdl;fjasdlkf
 
+#;alksdjf;alksjdfl;kasjdf
+#;lakdjf;laksjdfl;kads
+#;alskdjf;alskdfj
 
 #ja;ldkfja;ldkfjasdf
 

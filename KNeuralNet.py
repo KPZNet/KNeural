@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import copy
 from datetime import datetime
 
+# local change
 
 def plot_error(epocs, error_history):
     plt.plot(epocs, error_history, label="errors")
@@ -11,6 +12,10 @@ def plot_error(epocs, error_history):
     plt.ylabel("error")
     plt.legend()
     plt.show()
+
+
+
+    #ljdflkajsdlfjasdf
 
 def plot_weights(epocs, weight_history):
     wh = np.array(weight_history)
