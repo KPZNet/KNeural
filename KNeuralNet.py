@@ -19,6 +19,8 @@ from datetime import datetime
 
 #a;lkdjf;aldjfklasdf
 
+#lakdjalksdjflkasdjf
+
 def plot_error(epocs, error_history):
     plt.plot(epocs, error_history, label="errors")
     plt.title("Training")
